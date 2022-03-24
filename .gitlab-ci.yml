@@ -1,0 +1,36 @@
+stages:
+  - DEV
+
+PROD update app:
+  stage: DEV
+  tags: [dev-new-denginadom1]
+  only:
+    refs:
+      - main
+  when: manual
+  script:
+    - yarn install
+
+PROD restart app:
+  stage: DEV
+  tags: [dev-new-denginadom1]
+  only:
+    refs:
+      - main
+  when: manual
+  script:
+    - pm2 stop ecosystem.config.js
+    - yarn install
+    - pm2 start ecosystem.config.js -i 2 --only back-prod
+
+PROD yarn upgrade packages:
+  stage: DEV
+  tags: [dev-new-denginadom1]
+  only:
+    refs:
+      - main
+  when: manual
+  script:
+    - pm2 stop ecosystem.config.js
+    - yarn upgrade
+    - pm2 start ecosystem.config.js -i 2 --only back-prod
