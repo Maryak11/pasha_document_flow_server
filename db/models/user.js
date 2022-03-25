@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 const db = require("../index");
-const divisionModel = require("./division");
+const { Division } = require("./division");
 
 const userModel = db.define(
   "user",
@@ -37,7 +37,7 @@ const userModel = db.define(
     divisionId: {
       type: DataTypes.INTEGER,
       references: {
-        model: divisionModel,
+        model: Division,
         key: "id",
       },
       onDelete: "CASCADE",
