@@ -21,7 +21,7 @@ exports.isUserAdmin = async (req) => {
 
   const userId = userAccessData?.id || null;
   const user = await userModel.findOne({ where: { id: userId } });
-  return user?.role === "admin";
+  return user?.scope === "admin";
 };
 
 exports.pagination = (itemsPerPage, page) => {

@@ -7,7 +7,7 @@ const newUserSchema = {
     email: { type: "string" },
     password: { type: "string" },
     phone: { type: "string" },
-    role: { type: "string" },
+    scope: { type: "string" },
     divisionId: { type: "number" },
   },
 };

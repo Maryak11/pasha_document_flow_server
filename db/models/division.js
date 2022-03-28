@@ -3,7 +3,7 @@ const db = require("../index");
 
 const Division = db.define("division", {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.TINYINT,
     primaryKey: true,
     autoIncrement: true,
   },
@@ -19,7 +19,7 @@ const Division = db.define("division", {
 
 const Project = db.define("project", {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.TINYINT,
     primaryKey: true,
     autoIncrement: true,
   },

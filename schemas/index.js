@@ -4,7 +4,9 @@ exports.getUserSchema = {
     id: { type: "number" },
     displayedName: { type: "string" },
     email: { type: "string" },
-    role: { type: "string" },
+    scope: { type: "string" },
+    divisionName: { type: "string" },
+    divisionId: { type: "string" },
     createdAt: { type: "string" },
   },
 };

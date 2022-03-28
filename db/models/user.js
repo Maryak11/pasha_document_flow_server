@@ -6,7 +6,7 @@ const userModel = db.define(
   "user",
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.TINYINT,
       primaryKey: true,
       autoIncrement: true,
     },
@@ -26,7 +26,7 @@ const userModel = db.define(
       type: DataTypes.STRING(64),
       allowNull: false,
     },
-    role: {
+    scope: {
       type: DataTypes.STRING(50),
       default: "",
     },
@@ -35,7 +35,7 @@ const userModel = db.define(
       allowNull: false,
     },
     divisionId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.TINYINT,
       references: {
         model: Division,
         key: "id",
@@ -48,4 +48,6 @@ const userModel = db.define(
     updatedAt: false,
   },
 );
+
+userModel.belongsTo(Division);
 module.exports = userModel;
