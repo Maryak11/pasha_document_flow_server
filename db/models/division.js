@@ -27,6 +27,13 @@ const Project = db.define("project", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  status: {
+    type: DataTypes.ENUM("open", "close"),
+  },
+  customer: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   projectTranslitName: {
     type: DataTypes.STRING,
     allowNull: false,
