@@ -1,7 +1,6 @@
 const { DataTypes } = require("sequelize");
 const db = require("../index");
-const { Project } = require("./division");
-const userModel = require("./user");
+const { Project, User } = require("./division");
 
 const Tasks = db.define("tasks", {
   id: {
@@ -18,7 +17,7 @@ const Tasks = db.define("tasks", {
     allowNull: false,
   },
   projectId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.TINYINT,
     references: {
       model: Project,
       key: "id",
@@ -27,9 +26,9 @@ const Tasks = db.define("tasks", {
     onUpdate: "CASCADE",
   },
   userId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.TINYINT,
     references: {
-      model: userModel,
+      model: User,
       key: "id",
     },
     onDelete: "CASCADE",

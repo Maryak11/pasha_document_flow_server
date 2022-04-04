@@ -5,4 +5,7 @@ module.exports = async function (fastify) {
   fastify.get("/projects", async function (req, reply) {
     await projectsController.getAllProjets(req, reply);
   });
+  fastify.get("/projects/:id", async function (req, reply) {
+    await projectsController.getCurrentProject(req, reply);
+  });
 };

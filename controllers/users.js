@@ -1,10 +1,10 @@
 const messages = require("../helpers/routes/messages");
-const { userModel } = require("../db/models");
+const { User } = require("../db/models");
 const { setPasswordHash, catchUnexpectedError } = require("../service");
 
 const getAllUsers = async (req, reply) => {
   try {
-    const users = await userModel.findAll();
+    const users = await User.findAll();
     reply.send(users);
   } catch (err) {
     catchUnexpectedError(err, reply);
@@ -13,7 +13,7 @@ const getAllUsers = async (req, reply) => {
 
 const getOneUser = async (req, reply) => {
   try {
-    const user = await userModel.findOne({
+    const user = await User.findOne({
       where: { id: req.params.id },
     });
     if (!user) {
@@ -28,7 +28,7 @@ const getOneUser = async (req, reply) => {
 
 const updateUser = async (req, reply) => {
   try {
-    const user = await userModel.findOne({
+    const user = await User.findOne({
       where: { id: req.params.id },
     });
 

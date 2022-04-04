@@ -1,12 +1,13 @@
 const { setPasswordHash } = require("./");
 const Sequelize = require("sequelize");
-const { tokenModel, userModel } = require("../db/models");
+const { tokenModel } = require("../db/models");
+const { User } = require("../db/models/division");
 const { Division } = require("../db/models/division");
 const { generateTokens, saveModelToken, validateRefreshToken } = require("./tokens.service");
 const { compare } = require("bcryptjs");
 
 const register = async (payload) => {
-  const candidate = await userModel.findOne({
+  const candidate = await User.findOne({
     where: { email: payload.body.email },
   });
   if (candidate) {
@@ -25,7 +26,7 @@ const register = async (payload) => {
   // const userAgent = payload.headers["user-agent"];
 
   newUser.password = await setPasswordHash(newUser.password.toString(), process.env.SALT);
-  const userDB = await userModel.create(newUser);
+  const userDB = await User.create(newUser);
 
   // const tokens = generateTokens({ email: userDB.email, id: userDB.id });
   // await saveModelToken(userDB.id, tokens.refreshToken, userAgent);
@@ -42,7 +43,7 @@ const register = async (payload) => {
 };
 
 const login = async ({ email, password }, userAgent) => {
-  const candidate = await userModel.findOne({
+  const candidate = await User.findOne({
     where: { email },
     include: Division,
     attributes: {
@@ -91,7 +92,7 @@ const refresh = async (refreshToken, headers) => {
     return false;
   }
 
-  const user = await userModel.findOne({
+  const user = await User.findOne({
     where: {
       id: userData.id,
     },

@@ -17,6 +17,55 @@ const Division = db.define("division", {
   },
 });
 
+const User = db.define(
+  "user",
+  {
+    id: {
+      type: DataTypes.TINYINT,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    displayedName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: true,
+      },
+    },
+    password: {
+      type: DataTypes.STRING(64),
+      allowNull: false,
+    },
+    scope: {
+      type: DataTypes.STRING(50),
+      default: "",
+    },
+    phone: {
+      type: DataTypes.STRING(60),
+      allowNull: false,
+    },
+    divisionId: {
+      type: DataTypes.TINYINT,
+      references: {
+        model: Division,
+        key: "id",
+      },
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    },
+  },
+  {
+    updatedAt: false,
+  },
+);
+
+User.belongsTo(Division);
+
 const Project = db.define("project", {
   id: {
     type: DataTypes.TINYINT,
@@ -40,6 +89,23 @@ const Project = db.define("project", {
   },
 });
 
+const UsersProject = db.define("UsersProject", {
+  projectId: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: Project,
+      key: "id",
+    },
+  },
+  userId: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: User,
+      key: "id",
+    },
+  },
+});
+
 const DivisionProject = db.define("DivisionProject", {
   divisionId: {
     type: DataTypes.INTEGER,
@@ -56,8 +122,10 @@ const DivisionProject = db.define("DivisionProject", {
     },
   },
 });
-
 Division.belongsToMany(Project, { through: DivisionProject, foreignKey: "divisionId" });
 Project.belongsToMany(Division, { through: DivisionProject, foreignKey: "projectId" });
 
-module.exports = { Division, Project };
+User.belongsToMany(Project, { through: UsersProject, foreignKey: "userId" });
+Project.belongsToMany(User, { through: UsersProject, foreignKey: "projectId" });
+
+module.exports = { Division, Project, User };

@@ -1,5 +1,5 @@
 const messages = require("../helpers/routes/messages");
-const userModel = require("../db/models");
+const User = require("../db/models");
 const { validateAccessToken } = require("./tokens.service");
 const { hash } = require("bcryptjs");
 
@@ -20,7 +20,7 @@ exports.isUserAdmin = async (req) => {
   }
 
   const userId = userAccessData?.id || null;
-  const user = await userModel.findOne({ where: { id: userId } });
+  const user = await User.findOne({ where: { id: userId } });
   return user?.scope === "admin";
 };
 

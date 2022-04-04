@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 const db = require("../index");
-const userModel = require("./user");
+const { User } = require("./division");
 
 const tokenModel = db.define("token", {
   id: {
@@ -9,9 +9,9 @@ const tokenModel = db.define("token", {
     autoIncrement: true,
   },
   userId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.TINYINT,
     references: {
-      model: userModel,
+      model: User,
       key: "id",
     },
     onDelete: "CASCADE",

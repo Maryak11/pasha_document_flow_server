@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 const db = require("../");
-const userModel = require("./user");
+const { User } = require("./division");
 
 const fileModel = db.define(
   "file",
@@ -22,9 +22,9 @@ const fileModel = db.define(
       required: true,
     },
     userId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.TINYINT,
       references: {
-        model: userModel,
+        model: User,
         key: "id",
       },
       required: true,
