@@ -21,6 +21,7 @@ const fileModel = db.define(
       allowNull: false,
       required: true,
     },
+
     userId: {
       type: DataTypes.TINYINT,
       references: {

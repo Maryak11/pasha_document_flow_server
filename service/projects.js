@@ -1,7 +1,6 @@
 const { Project, Division, DivisionProject, User } = require("../db/models/division");
-const Sequelize = require("sequelize");
 
-const getProjectsCategoryDivisions = async (divisionId, status) => {
+const getProjectsCategoryDivisionsForAdmin = async (divisionId, status) => {
   try {
     if (+divisionId !== 0 && status === "all") {
       const result = await Project.findAll({
@@ -16,10 +15,6 @@ const getProjectsCategoryDivisions = async (divisionId, status) => {
             model: User,
           },
         ],
-
-        attributes: {
-          include: [[Sequelize.col("divisionName"), "divisionName"]],
-        },
         through: {
           model: DivisionProject,
         },
@@ -38,9 +33,6 @@ const getProjectsCategoryDivisions = async (divisionId, status) => {
             model: User,
           },
         ],
-        attributes: {
-          include: [[Sequelize.col("divisionName"), "divisionName"]],
-        },
         through: {
           model: DivisionProject,
         },
@@ -62,9 +54,6 @@ const getProjectsCategoryDivisions = async (divisionId, status) => {
             model: User,
           },
         ],
-        attributes: {
-          include: [[Sequelize.col("divisionName"), "divisionName"]],
-        },
         through: {
           model: DivisionProject,
         },
@@ -78,8 +67,59 @@ const getProjectsCategoryDivisions = async (divisionId, status) => {
             model: User,
           },
         ],
-        attributes: {
-          include: [[Sequelize.col("divisionName"), "divisionName"]],
+      });
+      return result;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const getProjectsCategoryDivisionsForUser = async (divisionId, status, userId) => {
+  try {
+    if (status === "all") {
+      const result = await Project.findAll({
+        include: [
+          {
+            model: User,
+            where: {
+              id: userId,
+            },
+          },
+          {
+            model: Division,
+            where: {
+              id: divisionId,
+            },
+          },
+        ],
+        through: {
+          model: DivisionProject,
+        },
+      });
+      console.log(result);
+      return result;
+    } else {
+      const result = await Project.findAll({
+        where: {
+          status,
+        },
+        include: [
+          {
+            model: Division,
+            where: {
+              id: divisionId,
+            },
+          },
+          {
+            model: User,
+            where: {
+              id: userId,
+            },
+          },
+        ],
+        through: {
+          model: DivisionProject,
         },
       });
       return result;
@@ -91,7 +131,7 @@ const getProjectsCategoryDivisions = async (divisionId, status) => {
 
 const getOneProject = async (projectId) => {
   try {
-    const project = Project.findOne({
+    const project = await Project.findOne({
       where: { id: projectId },
       include: [
         { model: Division },
@@ -106,7 +146,30 @@ const getOneProject = async (projectId) => {
   }
 };
 
+const updateProject = async (projectId, data) => {
+  try {
+    const project = await Project.findOne({
+      where: {
+        id: projectId,
+      },
+      include: [
+        { model: Division },
+        {
+          model: User,
+        },
+      ],
+    });
+    await project.update(data);
+    await project.setDivisions(data.divisions);
+    await project.setUsers(data.users);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
-  getProjectsCategoryDivisions,
+  getProjectsCategoryDivisionsForAdmin,
+  getProjectsCategoryDivisionsForUser,
   getOneProject,
+  updateProject,
 };

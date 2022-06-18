@@ -2,7 +2,7 @@ const fs = require("fs/promises");
 const path = require("path");
 const messages = require("../helpers/routes/messages");
 const filesService = require("../service/files");
-const fileModel = require("../db/models");
+const { fileModel } = require("../db/models/file");
 const { pagination, isPageNumberPossible, catchUnexpectedError } = require("../service");
 const { allowedExtensions, limits } = require("../helpers/routes/files/constants");
 const { translitFileName } = require("../helpers/functions");
@@ -27,9 +27,11 @@ const getAllFiles = async (req, reply) => {
 
 const uploadNewFile = async (req, reply) => {
   try {
+    console.log(req.files);
     if (req.files && req.files.length > 0) {
       const responseFiles = [];
       for (const file of req.files) {
+        console.log(file.name);
         const item = await fileModel.create({
           name: file.filename,
           size: file.size,

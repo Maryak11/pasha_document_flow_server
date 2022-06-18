@@ -1,11 +1,32 @@
 const messages = require("../helpers/routes/messages");
-const { User } = require("../db/models");
+const { User, Project, UsersProject } = require("../db/models/division");
 const { setPasswordHash, catchUnexpectedError } = require("../service");
 
 const getAllUsers = async (req, reply) => {
   try {
     const users = await User.findAll();
     reply.send(users);
+  } catch (err) {
+    catchUnexpectedError(err, reply);
+  }
+};
+
+const getUsersForUpdateTasks = async (projectId, reply) => {
+  try {
+    console.log(projectId);
+    const result = await User.findAll({
+      include: {
+        model: Project,
+        where: {
+          id: projectId,
+        },
+      },
+      through: {
+        model: UsersProject,
+      },
+    });
+
+    reply.send(result);
   } catch (err) {
     catchUnexpectedError(err, reply);
   }
@@ -46,4 +67,5 @@ module.exports = {
   getAllUsers,
   getOneUser,
   updateUser,
+  getUsersForUpdateTasks,
 };

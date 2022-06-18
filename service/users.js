@@ -2,28 +2,18 @@ const Tasks = require("../db/models/tasks");
 const { User, Project } = require("../db/models/division");
 // const Sequelize = require("sequelize");
 
-const getTasksByProjectForUsers = async (projectId, status, userId) => {
+const getUsersForUpdateTasks = async (projectId) => {
   try {
-    if (status === "all") {
-      const result = await Tasks.findAll({
+    const result = await User.findAll({
+      include: {
+        model: Project,
         where: {
           projectId,
-          userId,
         },
-        include: User,
-      });
-      return result;
-    } else if (status !== "all") {
-      const result = await Tasks.findAll({
-        where: {
-          status,
-          projectId,
-          userId,
-        },
-        include: User,
-      });
-      return result;
-    }
+      },
+    });
+
+    return result;
   } catch (err) {
     console.log(err);
   }
@@ -71,6 +61,6 @@ const getTasksByProjectForAdmin = async (projectId, status) => {
 };
 
 module.exports = {
-  getTasksByProjectForUsers,
+  getUsersForUpdateTasks,
   getTasksByProjectForAdmin,
 };

@@ -1,5 +1,5 @@
 const messages = require("../helpers/routes/messages");
-const User = require("../db/models");
+const { User } = require("../db/models/division");
 const { validateAccessToken } = require("./tokens.service");
 const { hash } = require("bcryptjs");
 

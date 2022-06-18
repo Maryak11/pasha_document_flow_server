@@ -12,7 +12,7 @@ const Tasks = db.define("tasks", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  taskTranslitName: {
+  description: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -25,6 +25,10 @@ const Tasks = db.define("tasks", {
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
   },
+  files: {
+    type: DataTypes.JSON,
+    allowNull: true,
+  },
   userId: {
     type: DataTypes.TINYINT,
     references: {
@@ -34,6 +38,16 @@ const Tasks = db.define("tasks", {
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
   },
+  status: {
+    type: DataTypes.ENUM("open", "close"),
+  },
+});
+
+Tasks.belongsTo(User, {
+  foreignKey: "userId",
+});
+Tasks.belongsTo(Project, {
+  foreignKey: "projectId",
 });
 
 module.exports = Tasks;

@@ -51,7 +51,7 @@ const postFilesOpts = {
       500: responseMsgObj,
     },
   },
-  preValidation: validate(["jwtauth", "isAdmin"]),
+
   preHandler: upload().array("multi-files", 20),
 };
 const postFilesForClientOpts = {
