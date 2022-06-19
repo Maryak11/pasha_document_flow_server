@@ -15,7 +15,7 @@ const register = async (req, reply) => {
   }
 };
 
-const login = async (req, reply) => {
+const login = async (req, reply) => { //функция при логине пользователя 
   try {
     if (!(req.body.email && req.body.password)) {
       reply.code(400).send({ message: messages.fillTheFields });

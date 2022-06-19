@@ -78,8 +78,8 @@ const getProjectsCategoryDivisionsForAdmin = async (divisionId, status) => {
 const getProjectsCategoryDivisionsForUser = async (divisionId, status, userId) => {
   try {
     if (status === "all") {
-      const result = await Project.findAll({
-        include: [
+      const result = await Project.findAll({ //обращение к таблице проектов
+        include: [ //отдать проекты только для данного сотрудника, который их просит
           {
             model: User,
             where: {
@@ -98,7 +98,7 @@ const getProjectsCategoryDivisionsForUser = async (divisionId, status, userId) =
         },
       });
       console.log(result);
-      return result;
+      return result; //отдаю результат в контроллеры
     } else {
       const result = await Project.findAll({
         where: {

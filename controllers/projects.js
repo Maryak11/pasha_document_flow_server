@@ -13,7 +13,7 @@ const getAllProjets = async (req, reply) => {
       include: Project,
     });
 
-    if (scope.scope !== "user") {
+    if (scope.scope !== "user") { 
       const projects = await projectService.getProjectsCategoryDivisionsForAdmin(
         req.query.divisionId,
         req.query.status,

@@ -2,11 +2,11 @@ const jwt = require("jsonwebtoken");
 const { tokenModel } = require("../db/models");
 
 const generateTokens = (payload) => {
-  const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {
-    expiresIn: "1800s",
+  const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, { //JWT библиотека для генерации джвт токена
+    expiresIn: "1800s", //время жизни токена аксеса 30 минут
   });
   const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {
-    expiresIn: "30d",
+    expiresIn: "30d",//время жизни токена рефреш 30 дней
   });
   return {
     accessToken,
@@ -14,7 +14,7 @@ const generateTokens = (payload) => {
   };
 };
 
-const saveModelToken = async (userId, refreshToken, userAgent) => {
+const saveModelToken = async (userId, refreshToken, userAgent) => { //Для проверки входа в систему, обновление аксес токена
   const tokenData = await tokenModel.findOne({
     where: {
       userId: userId,
@@ -28,15 +28,15 @@ const saveModelToken = async (userId, refreshToken, userAgent) => {
   const token = await tokenModel.create({
     userId: userId,
     token: refreshToken,
-    userAgent: userAgent,
+    userAgent: userAgent, // откуда и когда заходил
   });
 
   return token;
 };
 
-const removeToken = async (refreshToken, headers) => {
+const removeToken = async (refreshToken, headers) => { //Когда пользователь  выходит из системы, удаляет запись с рефреш токена
   console.log("remove");
-  const tokenData = await tokenModel.destroy({
+  const tokenData = await tokenModel.destroy({ //Удалить запись
     where: {
       token: refreshToken,
       userAgent: headers["user-agent"],
@@ -46,7 +46,7 @@ const removeToken = async (refreshToken, headers) => {
   return tokenData;
 };
 
-const validateAccessToken = (token) => {
+const validateAccessToken = (token) => { //Для валидации токена
   try {
     const userData = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
 
@@ -55,7 +55,7 @@ const validateAccessToken = (token) => {
     return null;
   }
 };
-const validateRefreshToken = (token) => {
+const validateRefreshToken = (token) => { //Валидации рефреш токена, разные потому что разные секретные слова
   try {
     const userData = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
 

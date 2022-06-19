@@ -57,11 +57,11 @@ const login = async ({ email, password }, userAgent) => {
   if (!candidate) {
     return false;
   }
-  const isPassEqual = await compare(password, candidate.password);
+  const isPassEqual = await compare(password, candidate.password); //библиотека для проверки пароля
   if (!isPassEqual) {
     return false;
   }
-  const tokens = generateTokens({ email: candidate.email, id: candidate.id });
+  const tokens = generateTokens({ email: candidate.email, id: candidate.id }); //Генерация токена для пользователя
   await saveModelToken(candidate.id, tokens.refreshToken, userAgent);
 
   return {

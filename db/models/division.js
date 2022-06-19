@@ -64,7 +64,7 @@ const User = db.define(
   },
 );
 
-User.belongsTo(Division);
+User.belongsTo(Division); //1 ко многим
 
 const Project = db.define("project", {
   id: {
