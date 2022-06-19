@@ -15,10 +15,10 @@ module.exports = async (req, reply) => {
       return reply.code(401).send({ message: messages.authError });
     }
 
-    const userAccessData = validateAccessToken(accessToken);
+    const userAccessData = validateAccessToken(accessToken); //проверяет валидность аксес токена
     if (!userAccessData) {
       console.log("Невалидный access токен");
-      return reply.code(401).send({ message: messages.authError });
+      return reply.code(401).send({ message: messages.authError }); //ошибка авторизации
     }
 
     return (req.user = userAccessData);

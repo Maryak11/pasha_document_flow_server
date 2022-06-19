@@ -25,11 +25,10 @@ const register = async (payload) => {
 
   // const userAgent = payload.headers["user-agent"];
 
-  newUser.password = await setPasswordHash(newUser.password.toString(), process.env.SALT);
-  const userDB = await User.create(newUser);
+  newUser.password = await setPasswordHash(newUser.password.toString(), process.env.SALT); //Хешируем пароль для записи в базу
+  const userDB = await User.create(newUser); // Создали нового пользователя в базе
 
-  // const tokens = generateTokens({ email: userDB.email, id: userDB.id });
-  // await saveModelToken(userDB.id, tokens.refreshToken, userAgent);
+
 
   return {
     user: {
