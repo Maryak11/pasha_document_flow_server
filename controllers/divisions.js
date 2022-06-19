@@ -4,7 +4,7 @@ const { Division } = require("../db/models/division");
 
 const getAllDivisions = async (req, reply) => {
   try {
-    const divisions = await Division.findAll();
+    const divisions = await Division.findAll({});
     const mapDivisions = divisions.map((el) => {
       return { ...el, value: el.id, name: el.divisionName };
     });

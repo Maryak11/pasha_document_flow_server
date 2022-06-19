@@ -1,5 +1,5 @@
 const messages = require("../../helpers/routes/messages");
-const { User } = require("../../db/models");
+const { User } = require("../../db/models/division");
 
 module.exports = async (req, reply) => {
   const userId = req.user?.id || null;

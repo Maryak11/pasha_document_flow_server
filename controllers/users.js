@@ -1,10 +1,16 @@
 const messages = require("../helpers/routes/messages");
-const { User, Project, UsersProject } = require("../db/models/division");
+const { User, Project, UsersProject, Division } = require("../db/models/division");
 const { setPasswordHash, catchUnexpectedError } = require("../service");
+const Sequelize = require("sequelize");
 
 const getAllUsers = async (req, reply) => {
   try {
-    const users = await User.findAll();
+    const users = await User.findAll({
+      include: Division,
+      attributes: {
+        include: [[Sequelize.col("divisionName"), "divisionName"]],
+      },
+    });
     reply.send(users);
   } catch (err) {
     catchUnexpectedError(err, reply);
@@ -34,6 +40,7 @@ const getUsersForUpdateTasks = async (projectId, reply) => {
 
 const getOneUser = async (req, reply) => {
   try {
+    console.log("sfdas");
     const user = await User.findOne({
       where: { id: req.params.id },
     });
