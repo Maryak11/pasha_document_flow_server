@@ -20,4 +20,5 @@ module.exports = {
   // tasks
 
   taskIsAdded: "Задача успешно создана",
+  TaskIsUpdated: "Задача успешно сдана",
 };

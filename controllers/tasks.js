@@ -40,6 +40,22 @@ const addOneTask = async (req, reply) => {
   }
 };
 
+const updateTask = async (req, reply) => {
+  try {
+    const task = await Tasks.findOne({
+      where: { id: req.params.id },
+    });
+
+    const newTask = req.body;
+
+    await task.update(newTask);
+
+    reply.code(202).send({ message: messages.TaskIsUpdated });
+  } catch (err) {
+    catchUnexpectedError(err, reply);
+  }
+};
+
 const getOneTask = async (req, reply) => {
   try {
     const task = await Tasks.findOne({
@@ -63,4 +79,5 @@ module.exports = {
   getAllTasks,
   addOneTask,
   getOneTask,
+  updateTask,
 };

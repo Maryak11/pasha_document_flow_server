@@ -11,4 +11,7 @@ module.exports = async function (fastify) {
   fastify.get("/task/:id", async function (req, reply) {
     await tasksController.getOneTask(req, reply);
   });
+  fastify.put("/task/:id", async function (req, reply) {
+    await tasksController.updateTask(req, reply);
+  });
 };
