@@ -59,7 +59,7 @@ const updateUser = async (req, reply) => {
     const user = await User.findOne({
       where: { id: req.params.id },
     });
-
+    console.log(req.body);
     const newUser = req.body;
     newUser.password = await setPasswordHash(newUser.password.toString(), process.env.SALT);
     await user.update(newUser);

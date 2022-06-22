@@ -1,12 +1,18 @@
 const authService = require("../service/auth");
 const messages = require("../helpers/routes/messages");
 const { catchUnexpectedError } = require("../service");
+const { Division } = require("../db/models/division");
 
 const register = async (req, reply) => {
   try {
     const result = await authService.register(req);
+    const res = await Division.findOne({ where: { id: req.body.divisionId } });
+    console.log(result);
     if (result) {
-      reply.code(200).send({ message: messages.successRegistration });
+      reply.code(200).send({
+        body: { ...result.user, divisionName: res.dataValues.divisionName },
+        message: messages.successRegistration,
+      });
     } else {
       reply.code(409).send({ message: messages.userAlreadyExists });
     }
@@ -15,7 +21,8 @@ const register = async (req, reply) => {
   }
 };
 
-const login = async (req, reply) => { //функция при логине пользователя 
+const login = async (req, reply) => {
+  //функция при логине пользователя
   try {
     if (!(req.body.email && req.body.password)) {
       reply.code(400).send({ message: messages.fillTheFields });
